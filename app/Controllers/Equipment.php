@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\PlantModel;
 use App\Models\EquipmentModel;
 
+use DateTime;
+
 class Equipment extends BaseController
 {
     protected $plantModel;
@@ -28,8 +30,8 @@ class Equipment extends BaseController
         $name_equipment = $vars['name_equipment'];
         $status_equipment = $vars['status_equipment'];
         $line_equipment = $vars['line_equipment'];
-        // $target = $vars['target'];
-        // $actual = $vars['actual'];
+        $target = $vars['target'];
+        $actual = $vars['actual'];
         $date_equipment = $vars['date_equipment'];
         $time_equipment = $vars['time_equipment'];
 
@@ -55,6 +57,33 @@ class Equipment extends BaseController
 
                 return $this->response->setStatusCode(400)->setJSON($result);
             } else {
+                // Duration
+                $duration_equipment = null;
+
+                if ($status_equipment == 'OFF') {
+                    $equipmentOn = $this->equipmentModel->where('no_batch', $no_batch)->where('name_equipment', $name_equipment)->where('status_equipment', 'ON')->where('line_equipment', $line_equipment)->first();
+                    $equipmentTimeOn = $equipmentOn['date_equipment'] . " " . $equipmentOn['time_equipment'];
+                    $equipmentTimeOff = $date_equipment . " " . $time_equipment;
+
+                    $totalEquipmentTime = new DateTime('00:00:00');
+                    $cloneTotalEquipmentTime = clone $totalEquipmentTime;
+                    $equipmentTime1 = new DateTime(date("H:i:s", strtotime($equipmentTimeOn)));
+                    $equipmentTime2 = new DateTime(date("H:i:s", strtotime($equipmentTimeOff)));
+                    $equipmentTimeDiff = $equipmentTime1->diff($equipmentTime2);
+                    $totalEquipmentTime->add($equipmentTimeDiff);
+
+                    $intervalEquipmentTime = $cloneTotalEquipmentTime->diff($totalEquipmentTime);
+
+                    $intervalTotalEquipmentTime = sprintf(
+                        "%02d:%02d:%02d",
+                        $intervalEquipmentTime->h + ($intervalEquipmentTime->d * 24), // jika interval lebih dari 1 hari, jam harus ditambah
+                        $intervalEquipmentTime->i,
+                        $intervalEquipmentTime->s
+                    );
+
+                    $duration_equipment = $intervalTotalEquipmentTime;
+                }
+
                 $equipmentData = [
                     'id_plant' => $plant['id_plant'],
                     'type_equipment' => $type_equipment,
@@ -66,6 +95,9 @@ class Equipment extends BaseController
                     'line_equipment' => $line_equipment,
                     'date_equipment' => date('Y-m-d', strtotime($date_equipment)),
                     'time_equipment' => date('H:i:s', strtotime($time_equipment)),
+                    'duration_equipment' => $duration_equipment,
+                    'target_equipment' => $target,
+                    'actual_equipment' => $actual,
                 ];
 
                 $save = $this->equipmentModel->save($equipmentData);
