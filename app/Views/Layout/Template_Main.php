@@ -258,9 +258,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="/production-report" class="nav-link <?= $menu == 'ReportProduksiTuban' ? 'active bg-teal' : '' ?>">
-                                        <i class="fas fa-building nav-icon"></i>
-                                        <p>Tuban</p>
+                                    <a href="/reportcycletime" class="nav-link <?= $menu == 'ReportCycletime' ? 'active' : '' ?>">
+                                        <i class="fas fa-sync nav-icon"></i>
+                                        <p>Cycle Time</p>
                                     </a>
                                 </li>
                             </ul>
