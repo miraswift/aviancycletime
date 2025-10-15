@@ -20,7 +20,7 @@ class Equipment extends BaseController
 
     public function create()
     {
-        $vars = $this->request->getVar();
+        $vars = json_decode(json_encode($this->request->getVar()), true);
 
         $code_plant = $vars['code_plant'];
         $type_equipment = $vars['type_equipment'];
