@@ -46,6 +46,26 @@ class EquipmentModel extends Model
         return $this->first();
     }
 
+    public function getWeighingDischargeFirst($no_batch)
+    {
+        $this->select('MIN(id_equipment) AS id_equipment');
+        $this->where('name_equipment', 'WEIGHING DISCHARGE');
+        $this->where('status_equipment', 'ON');
+        $this->where('no_batch', $no_batch);
+
+        return $this->first();
+    }
+
+    public function getWeighingDischargeLast($no_batch)
+    {
+        $this->select('MAX(id_equipment) AS id_equipment');
+        $this->where('name_equipment', 'WEIGHING DISCHARGE');
+        $this->where('status_equipment', 'OFF');
+        $this->where('no_batch', $no_batch);
+
+        return $this->first();
+    }
+
     public function getDischargeOn($no_batch)
     {
         // $this->select('MAX(id_equipment) AS id_equipment');

@@ -79,16 +79,39 @@ class ReportCycletime extends BaseController
         // $resultDelayTime = gmdate("H:i:s", abs($delayTime));
 
         // Weighing Discharge Time
-        $totalWeighingDischargeTime = "00:00:00";
-        $weighingDischarge = $this->equipmentModel->where('no_batch', $no_batch)->where('name_equipment', 'WEIGHING DISCHARGE')->where('status_equipment', 'OFF')->first();
+        // $weighingDischargeOn = 0;
+        // $weighingDischargeOff = 0;
+        $totalWeighingDischargeTime = new DateTime('00:00:00');
+        $cloneTotalWeighingDischargeTime = clone $totalWeighingDischargeTime;
+        $idWeighingDischargeFirst = $this->equipmentModel->getWeighingDischargeFirst($no_batch);
+        $weighingDischargeFirst = $this->equipmentModel->where('id_equipment', $idWeighingDischargeFirst['id_equipment'])->first();
+        $idWeighingDischargeLast = $this->equipmentModel->getWeighingDischargeLast($no_batch);
+        $weighingDischargeLast = $this->equipmentModel->where('id_equipment', $idWeighingDischargeLast['id_equipment'])->first();
+        $weighingDischargeTimeOn = $weighingDischargeFirst['date_equipment'] . " " . $weighingDischargeFirst['time_equipment'];
+        $weighingDischargeTimeOff = $weighingDischargeLast['date_equipment'] . " " . $weighingDischargeLast['time_equipment'];
+        // $weighingDischarge = $this->equipmentModel->where('no_batch', $no_batch)->where('name_equipment', 'WEIGHING DISCHARGE')->where('status_equipment', 'OFF')->first();
 
-        if ($weighingDischarge) {
-            $totalWeighingDischargeTime = $weighingDischarge['duration_equipment'];
-        }
+        $weighingDischargeTime1 = new DateTime(date("H:i:s", strtotime($weighingDischargeTimeOn)));
+        $weighingDischargeTime2 = new DateTime(date("H:i:s", strtotime($weighingDischargeTimeOff)));
+        $weighingDischargeTimeDiff = $weighingDischargeTime1->diff($weighingDischargeTime2);
+        $totalWeighingDischargeTime->add($weighingDischargeTimeDiff);
+
+        $intervalWeighingDischargeTime = $cloneTotalWeighingDischargeTime->diff($totalWeighingDischargeTime);
+
+        $intervalTotalWeighingDischargeTime = sprintf(
+            "%02d:%02d:%02d",
+            $intervalWeighingDischargeTime->h + ($intervalWeighingDischargeTime->d * 24), // jika interval lebih dari 1 hari, jam harus ditambah
+            $intervalWeighingDischargeTime->i,
+            $intervalWeighingDischargeTime->s
+        );
+
+        // if ($weighingDischarge) {
+        // $totalWeighingDischargeTime = $weighingDischarge['duration_equipment'];
+        // }
 
         // Mixing Time
         $mixingTimeOn = 0;
-        $mixingTimeOff = 0;
+        $mixingTimeOff = date('Y-m-d H:i:s');
         $totalMixingTime = new DateTime('00:00:00');
         $cloneTotalMixingTime = clone $totalMixingTime;
         $getMixingOn = $this->equipmentModel->getMixingOn($no_batch);
@@ -133,7 +156,7 @@ class ReportCycletime extends BaseController
         // $resMaterialTime = strtotime("1970-01-01 " . gmdate("H:i:s", abs($totalMaterialTime)));
 
         list($hDossing, $mDossing, $sDossing) = explode(":", $intervalTotalDossingTime);
-        list($hWeighingDischarge, $mWeighingDischarge, $sWeighingDischarge) = explode(":", $totalWeighingDischargeTime);
+        list($hWeighingDischarge, $mWeighingDischarge, $sWeighingDischarge) = explode(":", $intervalTotalWeighingDischargeTime);
         list($hMixing, $mMixing, $sMixing) = explode(":", $intervalTotalMixingTime);
         //  !!
         $scndDossingTime = $hDossing * 3600 + $mDossing * 60 + $sDossing;
