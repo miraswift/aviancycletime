@@ -25,7 +25,7 @@ class Equipment extends BaseController
         $code_plant = $vars['code_plant'];
         $type_equipment = $vars['type_equipment'];
         $no_spk = $vars['no_spk'];
-        $no_batch = $vars['no_batch'];
+        $no_batch = $vars['no_spk'] . '-' . $vars['no_batch'];
         $code_formula = $vars['code_formula'];
         $name_equipment = $vars['name_equipment'];
         $status_equipment = $vars['status_equipment'];
@@ -46,7 +46,7 @@ class Equipment extends BaseController
 
             return $this->response->setStatusCode(400)->setJSON($result);
         } else {
-            $checkEquipment = $this->equipmentModel->where('no_spk', $no_spk)->where('no_batch', $no_batch)->where('name_equipment', $name_equipment)->where('status_equipment', $status_equipment)->where('line_equipment', $line_equipment)->where('date_equipment', $date_equipment)->first();
+            $checkEquipment = $this->equipmentModel->where('no_batch', $no_batch)->where('name_equipment', $name_equipment)->where('status_equipment', $status_equipment)->where('line_equipment', $line_equipment)->where('date_equipment', $date_equipment)->first();
 
             if ($checkEquipment) {
                 $result = [
