@@ -12,3 +12,5 @@ $routes->post('/equipment/create', 'Equipment::create');
 // Report Cycletime
 $routes->get('/reportcycletime', 'ReportCycletime::index');
 $routes->get('/reportcycletime/(:any)', 'ReportCycletime::detail/$1');
+// Status
+$routes->get('status', 'Status::index');
