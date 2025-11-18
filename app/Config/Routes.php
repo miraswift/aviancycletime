@@ -9,6 +9,7 @@ $routes->get('/', 'Dashboard::index');
 
 // Equipment
 $routes->post('/equipment/create', 'Equipment::create');
+$routes->post('/equipment/createlog', 'Equipment::createLog');
 // Report Cycletime
 $routes->get('/reportcycletime', 'ReportCycletime::index');
 $routes->get('/reportcycletime/(:any)', 'ReportCycletime::detail/$1');
