@@ -123,4 +123,60 @@ class Equipment extends BaseController
             }
         }
     }
+
+    public function createLog()
+    {
+        $vars = json_decode(json_encode($this->request->getVar()), true);
+
+        $code_plant = $vars['code_plant'];
+        $type_equipment = $vars['type_equipment'];
+        $no_spk = $vars['no_spk'];
+        $no_batch = $vars['no_spk'] . '-' . $vars['no_batch'];
+        $code_formula = $vars['code_formula'];
+        $name_equipment = $vars['name_equipment'];
+        $status_equipment = $vars['status_equipment'];
+        $line_equipment = $vars['line_equipment'];
+        $target = $vars['target'];
+        $actual = $vars['actual'];
+        $date_equipment = $vars['date_equipment'];
+        $time_equipment = $vars['time_equipment'];
+
+        $plant = $this->plantModel->where('code_plant', $code_plant)->first();
+
+        $equipmentData = [
+            'id_plant' => $plant ? $plant['id_plant'] : 0,
+            'type_log_equipment' => $type_equipment,
+            'no_spk' => $no_spk,
+            'no_batch' => $no_batch,
+            'code_formula' => $code_formula,
+            'name_log_equipment' => $name_equipment,
+            'status_log_equipment' => $status_equipment,
+            'line_log_equipment' => $line_equipment,
+            'date_log_equipment' => date('Y-m-d', strtotime($date_equipment)),
+            'time_log_equipment' => date('H:i:s', strtotime($time_equipment)),
+            'target_log_equipment' => $target,
+            'actual_log_equipment' => $actual,
+        ];
+
+        $save = $this->equipmentModel->save($equipmentData);
+
+        if (!$save) {
+            $result = [
+                'code' => 400,
+                'status' => 'failed',
+                'msg' => "Equipment not saved",
+                'detail' => $this->equipmentModel->errors(),
+            ];
+
+            return $this->response->setStatusCode(400)->setJSON($result);
+        } else {
+            $result = [
+                'code' => 200,
+                'status' => 'ok',
+                'msg' => "Equipment saved succesfully",
+            ];
+
+            return $this->response->setStatusCode(200)->setJSON($result);
+        }
+    }
 }
