@@ -4,18 +4,20 @@ namespace App\Controllers;
 
 use App\Models\PlantModel;
 use App\Models\EquipmentModel;
-
+use App\Models\LogEquipmentModel;
 use DateTime;
 
 class Equipment extends BaseController
 {
     protected $plantModel;
     protected $equipmentModel;
+    protected $logEquipmentModel;
 
     public function __construct()
     {
         $this->plantModel = new PlantModel();
         $this->equipmentModel = new EquipmentModel();
+        $this->logEquipmentModel = new LogEquipmentModel();
     }
 
     public function create()
@@ -158,14 +160,14 @@ class Equipment extends BaseController
             'actual_log_equipment' => $actual,
         ];
 
-        $save = $this->equipmentModel->save($equipmentData);
+        $save = $this->logEquipmentModel->save($equipmentData);
 
         if (!$save) {
             $result = [
                 'code' => 400,
                 'status' => 'failed',
                 'msg' => "Equipment not saved",
-                'detail' => $this->equipmentModel->errors(),
+                'detail' => $this->logEquipmentModel->errors(),
             ];
 
             return $this->response->setStatusCode(400)->setJSON($result);
