@@ -263,6 +263,12 @@
                                         <p>Cycle Time</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="/report" class="nav-link <?= $menu == 'Report' ? 'active' : '' ?>">
+                                        <i class="fas fa-file-pdf nav-icon"></i>
+                                        <p>Report</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

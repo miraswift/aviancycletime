@@ -13,5 +13,8 @@ $routes->post('/equipment/createlog', 'Equipment::createLog');
 // Report Cycletime
 $routes->get('/reportcycletime', 'ReportCycletime::index');
 $routes->get('/reportcycletime/(:any)', 'ReportCycletime::detail/$1');
+// Report
+$routes->get('/report', 'Report::index');
+$routes->get('/report/(:any)', 'Report::print/$1');
 // Status
 $routes->get('status', 'Status::index');

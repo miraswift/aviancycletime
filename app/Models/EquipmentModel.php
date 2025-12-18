@@ -26,6 +26,25 @@ class EquipmentModel extends Model
         return $this->findAll();
     }
 
+    public function getBatchNumberGroupBySpk($no_spk)
+    {
+        $this->where('no_spk', $no_spk);
+        $this->groupBy('no_batch');
+        $this->orderBy('no_batch', 'DESC');
+
+        return $this->findAll();
+    }
+
+    public function getSpkGroup($dateFrom, $dateTo)
+    {
+        $this->where('date_equipment >=', $dateFrom);
+        $this->where('date_equipment <=', $dateTo);
+        $this->groupBy('no_spk');
+        $this->orderBy('no_spk', 'DESC');
+
+        return $this->findAll();
+    }
+
     public function getDossingFirst($no_batch)
     {
         $this->select('MIN(id_equipment) AS id_equipment');
