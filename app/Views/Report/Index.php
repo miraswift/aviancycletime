@@ -66,13 +66,15 @@
                                         <?php
                                         $no = 1;
                                         foreach ($batchs as $batch): ?>
-                                            <tr>
-                                                <td class="text-center"><?= $no++; ?></td>
-                                                <td><?= $batch['no_spk'] ?></td>
-                                                <td>
-                                                    <a href="/report/<?= $batch['no_spk'] ?>" class="btn btn-primary" title="Detail" target="__blank"><i class="fas fa-print"></i></a>
-                                                </td>
-                                            </tr>
+                                            <?php if (!empty($batch['no_spk'])): ?>
+                                                <tr>
+                                                    <td class="text-center"><?= $no++; ?></td>
+                                                    <td><?= $batch['no_spk'] ?></td>
+                                                    <td>
+                                                        <a href="/report/<?= $batch['no_spk'] ?>" class="btn btn-primary" title="Detail" target="__blank"><i class="fas fa-print"></i></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
