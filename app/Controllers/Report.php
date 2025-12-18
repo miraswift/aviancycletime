@@ -62,7 +62,7 @@ class Report extends BaseController
         // Output sebagai browser PDF
         return $this->response
             ->setHeader('Content-Type', 'application/pdf')
-            ->setHeader('Content-Disposition', 'inline;filename=' . 'Laporan_Cycletime' . $no_spk . '')
+            ->setHeader('Content-Disposition', 'inline;filename=' . 'Laporan_Cycletime' . $no_spk . '.pdf')
             ->setBody($mpdf->Output('', 'S')); // 'S' = return as string
     }
 }
