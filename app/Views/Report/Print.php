@@ -251,7 +251,7 @@
                         <td class="border text-center"><?= $onEquipment['time_equipment'] ?></td>
                         <td class="border text-center"><?= $offEquipment ? $offEquipment['time_equipment'] : 'Still running' ?></td>
                         <td class="border text-center"><?= $offEquipment ? $offEquipment['duration_equipment'] : '-' ?></td>
-                        <td class="border text-center"><?= $onEquipment['target_equipment'] ?></td>
+                        <td class="border text-center"><?= $onEquipment['actual_equipment'] ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endforeach; ?>
