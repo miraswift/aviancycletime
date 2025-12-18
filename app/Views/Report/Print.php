@@ -234,12 +234,29 @@
                     'mixing_cycle_time' => $intervalTotalMixingTime,
                     'cycle_time' => $resultCycleTime,
                     'delay_time' => $resultDelayTime,
+                    // 'batch_cycle_time' => 60 / $resultFeedingTime,
                 ];
 
                 $onEquipments = $equipmentModel->where('no_batch', $no_batch)->where('status_equipment', 'ON')->findAll();
+
+                // Cycle Batch
+                $batchCycleTimeMinutes = substr($resultFeedingTime, 3);
+                $resultbatchCycleTime = str_replace(':', '.', $batchCycleTimeMinutes);
                 ?>
                 <tr>
-                    <th colspan="5" class="text-left">Batch: <?= $batch['no_batch'] ?> <br> Feeding: <?= $resultFeedingTime ?> <br> Mixing: <?= $intervalTotalMixingTime ?> <br> Cycle Time: <?= $resultCycleTime ?> <br> Delay: <?= $resultDelayTime ?></th>
+                    <th colspan="5" class="text-left">
+                        <span>Batch: <?= $batch['no_batch'] ?></span>
+                        <br>
+                        <span>Feeding: <?= $resultFeedingTime ?></span>
+                        <br>
+                        <span>Mixing: <?= $intervalTotalMixingTime ?></span>
+                        <br>
+                        <span>Cycle Time: <?= $resultFeedingTime ?> (<?= number_format(60 / (float)$resultbatchCycleTime, 2, '.', ',') ?> Batch / jam)</span>
+                        <br>
+                        <span>Total Time: <?= $resultCycleTime ?></span>
+                        <br>
+                        <span>Delay: <?= $resultDelayTime ?></span>
+                    </th>
                 </tr>
                 <?php foreach ($onEquipments as $onEquipment): ?>
                     <?php
