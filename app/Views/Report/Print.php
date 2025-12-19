@@ -119,8 +119,18 @@
                 $dossingFirst = $equipmentModel->where('id_equipment', $idDossingFirst['id_equipment'])->first();
                 $idDossingLast = $equipmentModel->getDossingLast($no_batch);
                 $dossingLast = $equipmentModel->where('id_equipment', $idDossingLast['id_equipment'])->first();
-                $dossingTimeOn = $dossingFirst['date_equipment'] . " " . $dossingFirst['time_equipment'];
-                $dossingTimeOff = $dossingLast['date_equipment'] . " " . $dossingLast['time_equipment'];
+
+                // Null check
+                $dossingTimeOn = $batch['date_equipment'] . " " . "00:00:00";
+                if ($dossingFirst) {
+                    $dossingTimeOn = $dossingFirst['date_equipment'] . " " . $dossingFirst['time_equipment'];
+                }
+
+                // Null check
+                $dossingTimeOff = $batch['date_equipment'] . " " . "00:00:00";
+                if ($dossingLast) {
+                    $dossingTimeOff = $dossingLast['date_equipment'] . " " . $dossingLast['time_equipment'];
+                }
 
                 $dossingTime1 = new DateTime(date("H:i:s", strtotime($dossingTimeOn)));
                 $dossingTime2 = new DateTime(date("H:i:s", strtotime($dossingTimeOff)));
@@ -147,8 +157,19 @@
                 $weighingDischargeFirst = $equipmentModel->where('id_equipment', $idWeighingDischargeFirst['id_equipment'])->first();
                 $idWeighingDischargeLast = $equipmentModel->getWeighingDischargeLast($no_batch);
                 $weighingDischargeLast = $equipmentModel->where('id_equipment', $idWeighingDischargeLast['id_equipment'])->first();
-                $weighingDischargeTimeOn = $weighingDischargeFirst['date_equipment'] . " " . $weighingDischargeFirst['time_equipment'];
-                $weighingDischargeTimeOff = $weighingDischargeLast['date_equipment'] . " " . $weighingDischargeLast['time_equipment'];
+
+                // Null check
+                $weighingDischargeTimeOn = $batch['date_equipment'] . " " . "00:00:00";
+                if ($weighingDischargeFirst) {
+                    $weighingDischargeTimeOn = $weighingDischargeFirst['date_equipment'] . " " . $weighingDischargeFirst['time_equipment'];
+                }
+
+                $weighingDischargeTimeOff = $batch['date_equipment'] . " " . "00:00:00";
+                if ($weighingDischargeLast) {
+                    $weighingDischargeTimeOff = $weighingDischargeLast['date_equipment'] . " " . $weighingDischargeLast['time_equipment'];
+                }
+
+
                 // $weighingDischarge = $equipmentModel->where('no_batch', $no_batch)->where('name_equipment', 'WEIGHING DISCHARGE')->where('status_equipment', 'OFF')->first();
 
                 $weighingDischargeTime1 = new DateTime(date("H:i:s", strtotime($weighingDischargeTimeOn)));
@@ -251,7 +272,12 @@
                         <br>
                         <span>Mixing: <?= $intervalTotalMixingTime ?></span>
                         <br>
-                        <span>Cycle Time: <?= $resultFeedingTime ?> (<?= number_format(60 / (float)$resultbatchCycleTime, 2, '.', ',') ?> Batch / jam)</span>
+                        <?php if ((float)$resultbatchCycleTime > 0): ?>
+                            <span>Cycle Time: <?= $resultFeedingTime ?> (<?= number_format(60 / (float)$resultbatchCycleTime, 2, '.', ',') ?> Batch / jam)</span>
+                        <?php endif; ?>
+                        <?php if ((float)$resultbatchCycleTime <= 0): ?>
+                            <span>Cycle Time: <div class="text-red">BATCH DATA ERROR</div></span>
+                        <?php endif; ?>
                         <br>
                         <span>Total Time: <?= $resultCycleTime ?></span>
                         <br>
@@ -268,7 +294,7 @@
                         <td class="border text-center"><?= $onEquipment['time_equipment'] ?></td>
                         <td class="border text-center"><?= $offEquipment ? $offEquipment['time_equipment'] : 'Still running' ?></td>
                         <td class="border text-center"><?= $offEquipment ? $offEquipment['duration_equipment'] : '-' ?></td>
-                        <td class="border text-center"><?= $offEquipment ? $offEquipment['actual_equipment'] : '-' ?></td>
+                        <td class="border text-center"><?= $offEquipment ? number_format($offEquipment['actual_equipment'] / 10, 2, '.', ',') : '-' ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endforeach; ?>
