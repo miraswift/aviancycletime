@@ -34,8 +34,8 @@ class ReportByHour extends BaseController
         $data['batchs'] = $batchs;
 
         $data['title'] = 'Report Batch By Hour';
-        $data['menuGroup'] = 'ReportByHour';
-        $data['menu'] = 'Report';
+        $data['menuGroup'] = 'ReportProduksi';
+        $data['menu'] = 'ReportByHour';
         $data['timeFrom'] = $timeFrom;
         $data['timeTo'] = $timeTo;
         $data['date'] = $date;
