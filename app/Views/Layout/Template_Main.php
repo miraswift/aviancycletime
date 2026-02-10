@@ -269,6 +269,12 @@
                                         <p>Report</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="/reportbyhour" class="nav-link <?= $menu == 'ReportByHour' ? 'active' : '' ?>">
+                                        <i class="fas fa-clock nav-icon"></i>
+                                        <p>Batch By Hour</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -358,9 +364,19 @@
         // Daterange
         //Date range picker
         $('.daterange').daterangepicker()
+        $('.timerange').daterangepicker({
+            timePicker: true,
+            timePicker24Hour: true,
+            timePickerIncrement: 1,
+            locale: {
+                format: 'HH:mm'
+            }
+        }).on('show.daterangepicker', function(ev, picker) {
+            picker.container.find(".calendar-table").hide();
+        })
         // Input Mask
         //time dd/mm/yyyy
-        // $('#datetime').inputmask('HH:MM', {
+        // $('.timerange').inputmask('HH:MM', {
         //     'placeholder': 'hh:mm'
         // })
         $('[data-mask]').inputmask()
