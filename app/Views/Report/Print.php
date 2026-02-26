@@ -277,10 +277,13 @@
 
                 if ($underhopperFull) {
                     $timeUnderhopperFull = strtotime("1970-01-01 " . $underhopperFull['time_equipment']);
-                    $timeUnderhopperDischargeOn = strtotime("1970-01-01 " . $underhopperDischargeOn['time_equipment']);
-                    // Delay Time
-                    $downtimeMixingToUnderhopper = $timeUnderhopperFull - $timeUnderhopperDischargeOn;
-                    $resultDowntimeMixingToUnderhopper = gmdate("H:i:s", abs($downtimeMixingToUnderhopper));
+
+                    if ($underhopperDischargeOn) {
+                        $timeUnderhopperDischargeOn = strtotime("1970-01-01 " . $underhopperDischargeOn['time_equipment']);
+                        // Delay Time
+                        $downtimeMixingToUnderhopper = $timeUnderhopperFull - $timeUnderhopperDischargeOn;
+                        $resultDowntimeMixingToUnderhopper = gmdate("H:i:s", abs($downtimeMixingToUnderhopper));
+                    }
                 }
                 ?>
                 <tr>
@@ -302,7 +305,7 @@
                         <br>
                         <span>Delay: <?= $resultDelayTime ?></span>
                         <br>
-                        <span>Delay Mixing To Underhopper: <?= $underhopperFull ? $resultDowntimeMixingToUnderhopper : 0 ?></span>
+                        <span>Delay Mixing To Underhopper: <?= $underhopperFull && $underhopperDischargeOn ? $resultDowntimeMixingToUnderhopper : 0 ?></span>
                     </th>
                 </tr>
                 <?php foreach ($onEquipments as $onEquipment): ?>
