@@ -17,7 +17,7 @@ class App extends BaseConfig
      * E.g., http://example.com/
      */
     // public string $baseURL = 'http://10.26.6.221/aviantuban';
-    public string $baseURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . ($_SERVER['HTTP_HOST'] ?? 'localhost') . "/aviancycletime/";
+    public string $baseURL = "";
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
@@ -200,4 +200,16 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Mengisi baseURL secara dinamis saat class dijalankan
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+
+        // Ubah '/nama_project_anda/' sesuaikan dengan folder project Anda (wajib diakhiri slash)
+        $this->baseURL = $protocol . "://" . $host . "/aviancycletime/";
+    }
 }
