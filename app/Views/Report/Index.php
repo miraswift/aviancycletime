@@ -30,7 +30,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-10">
-                                    <form action="http://10.26.6.221/cycletime/report" method="GET">
+                                    <form action="<?= base_url() ?>/cycletime/report" method="GET">
                                         <div class="row">
                                             <label>Date range:</label>
                                             <div class="form-group ml-3">
@@ -71,7 +71,7 @@
                                                     <td class="text-center"><?= $no++; ?></td>
                                                     <td><?= $batch['no_spk'] ?></td>
                                                     <td>
-                                                        <a href="http://10.26.6.221/cycletime/report/<?= $batch['no_spk'] ?>" class="btn btn-primary" title="Detail" target="__blank"><i class="fas fa-print"></i></a>
+                                                        <a href="<?= base_url() ?>/cycletime/report/<?= $batch['no_spk'] ?>" class="btn btn-primary" title="Detail" target="__blank"><i class="fas fa-print"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php endif; ?>
